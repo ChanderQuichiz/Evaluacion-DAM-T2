@@ -85,6 +85,8 @@ fun UserCard(
                     )
                 }
             //Menu compononete
+
+                Spacer(modifier =  Modifier.width(100.dp))
                 var expanded by remember { mutableStateOf(false) }
                 Box(
                     modifier = Modifier

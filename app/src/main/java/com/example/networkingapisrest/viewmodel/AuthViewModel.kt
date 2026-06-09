@@ -17,12 +17,12 @@ class AuthViewModel(
     }
 
     suspend fun login(
-        usuario: String,
+        username: String,
         password: String
     ): Boolean {
 
         return repository.login(
-            usuario,
+            username,
             password
         ) != null
     }

@@ -17,6 +17,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,10 +29,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.networkingapisrest.dao.AppDatabase
-import com.example.networkingapisrest.data.model.User
-import com.example.networkingapisrest.data.repository.UserLocalRepository
-import com.example.networkingapisrest.viewmodel.UserLocalViewModel
+import com.example.networkingapisrest.data.local.AppDatabase
+import com.example.networkingapisrest.data.local.UserEntity
+import com.example.networkingapisrest.data.repository.UserEntityRepository
+import com.example.networkingapisrest.viewmodel.UserEntityViewModel
 import com.example.networkingapisrest.viewmodel.ViewModelFactory
 
 
@@ -41,13 +43,22 @@ onBack:()-> Unit
 ){
     val context = LocalContext.current
     val db = AppDatabase.getInstance(context)
-    val repository = UserLocalRepository(db.userDao())
-    val viewModel: UserLocalViewModel = viewModel(
-        factory = ViewModelFactory { UserLocalViewModel(repository) }
+    val repository = UserEntityRepository(db.userDao())
+    val viewModel: UserEntityViewModel = viewModel(
+        factory = ViewModelFactory { UserEntityViewModel(repository) }
     )
 
+    val userToEdit by viewModel.selectedUser.collectAsState()
+    var formulario by remember { mutableStateOf(UserEntity()) }
 
-    var formulario: User by remember { mutableStateOf(User()) }
+    LaunchedEffect(id) {
+        viewModel.loadUser(id)
+    }
+
+    LaunchedEffect(userToEdit) {
+        userToEdit?.let { formulario = it }
+    }
+
     Scaffold(
         topBar = {
             Row(
@@ -66,11 +77,14 @@ onBack:()-> Unit
                 Spacer(modifier = Modifier.width(150.dp))
                 IconButton(
                     onClick = {
-
+                            if (formulario.id != 0) {
+                                viewModel.delete(formulario)
+                            }
+                            onBack()
+                        }
+                    ) {
+                        Icon(Icons.Default.Delete,null)
                     }
-                ) {
-                    Icon(Icons.Default.Delete,null)
-                }
 
 
             }
@@ -127,12 +141,18 @@ onBack:()-> Unit
             )
             Spacer(modifier = Modifier.height(10.dp))
             Button(onClick ={
-
+                if (formulario.id != 0) {
+                    viewModel.update(formulario)
+                }
+                onBack()
             } , modifier = Modifier.fillMaxWidth(0.7f) ) {
                 Text("ACTUALIZAR")
             }
             Button(onClick ={
-             //   viewModel.update()
+                if (formulario.id != 0) {
+                    viewModel.delete(formulario)
+                }
+                onBack()
             }
             , modifier = Modifier.fillMaxWidth(0.7f)
             ) {

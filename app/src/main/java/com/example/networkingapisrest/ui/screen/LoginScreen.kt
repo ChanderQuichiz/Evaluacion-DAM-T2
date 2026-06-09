@@ -6,6 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.networkingapisrest.routes.Home
+import com.example.networkingapisrest.routes.Register
 import com.example.networkingapisrest.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
@@ -69,11 +71,7 @@ fun LoginScreen(
 
                     if (valido) {
 
-                        navController.navigate("home") {
-                            popUpTo("login") {
-                                inclusive = true
-                            }
-                        }
+                        navController.navigate(Home)
 
                     } else {
 
@@ -100,7 +98,7 @@ fun LoginScreen(
 
         TextButton(
             onClick = {
-                navController.navigate("register")
+                navController.navigate(Register)
             }
         ) {
             Text("Crear cuenta")

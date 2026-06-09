@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.networkingapisrest.data.local.UserEntity
+import com.example.networkingapisrest.routes.Login
 import com.example.networkingapisrest.viewmodel.AuthViewModel
 
 @Composable
@@ -92,17 +93,14 @@ fun RegisterScreen(
 
                         authViewModel.registrar(
                             UserEntity(
-                                usuario = usuario,
-                                correo = correo,
+                                name = usuario,
+                                username = usuario,
+                                email = correo,
                                 password = password
                             )
                         )
 
-                        navController.navigate("login") {
-                            popUpTo("register") {
-                                inclusive = true
-                            }
-                        }
+                        navController.navigate(Login)
                     }
                 }
             },
