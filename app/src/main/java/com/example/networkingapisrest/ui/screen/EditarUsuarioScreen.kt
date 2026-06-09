@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -37,10 +39,10 @@ import com.example.networkingapisrest.viewmodel.ViewModelFactory
 
 
 @Composable
-fun EditarUsuarioScreen(//
-id: Int,
-onBack:()-> Unit
-){
+fun EditarUsuarioScreen(
+    id: Int,
+    onBack: () -> Unit
+) {
     val context = LocalContext.current
     val db = AppDatabase.getInstance(context)
     val repository = UserEntityRepository(db.userDao())
@@ -50,6 +52,7 @@ onBack:()-> Unit
 
     val userToEdit by viewModel.selectedUser.collectAsState()
     var formulario by remember { mutableStateOf(UserEntity()) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(id) {
         viewModel.loadUser(id)
@@ -59,109 +62,110 @@ onBack:()-> Unit
         userToEdit?.let { formulario = it }
     }
 
-    Scaffold(
-        topBar = {
-Column() {
-    Spacer(modifier = Modifier.height(30.dp))
-    Row(
-        modifier = Modifier.padding(10.dp,6.dp).fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = { onBack()}
-        ) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack,null)
-        }
-
-        Spacer(modifier = Modifier.width(20.dp))
-
-        Text("Editar Usuario", fontSize = 20.sp)
-        Spacer(modifier = Modifier.width(150.dp))
-        IconButton(
-            onClick = {
-                if (formulario.id != 0) {
-                    viewModel.delete(formulario)
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text("¿Eliminar usuario?") },
+            text = { Text("Esta acción no se puede deshacer.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    if (formulario.id != 0) viewModel.delete(formulario)
+                    showDeleteDialog = false
+                    onBack()
+                }) {
+                    Text("Eliminar")
                 }
-                onBack()
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("Cancelar")
+                }
             }
-        ) {
-            Icon(Icons.Default.Delete,null)
-        }
-
-
+        )
     }
 
+    Scaffold(
+        topBar = {
+            Column {
+                Spacer(modifier = Modifier.height(30.dp))
+                Row(
+                    modifier = Modifier
+                        .padding(10.dp, 6.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = { onBack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+                    }
 
-}
+                    Spacer(modifier = Modifier.width(20.dp))
 
+                    Text("Editar Usuario", fontSize = 20.sp)
+
+                    Spacer(modifier = Modifier.width(150.dp))
+
+                    IconButton(onClick = { showDeleteDialog = true }) {
+                        Icon(Icons.Default.Delete, null)
+                    }
+                }
+            }
         }
-    ) {
-        paddingValues ->
+    ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
+                .padding(paddingValues)
                 .fillMaxWidth(),
-
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                    value = formulario.name,
+                value = formulario.name,
                 onValueChange = { value ->
-                    formulario = formulario.copy(name = value )
-                }
-                , label = {
-                    Text("Nombre completo")
-                }
+                    formulario = formulario.copy(name = value)
+                },
+                label = { Text("Nombre completo") }
             )
-
 
             OutlinedTextField(
                 value = formulario.username,
                 onValueChange = { value ->
-                    formulario = formulario.copy(username = value )
+                    formulario = formulario.copy(username = value)
                 },
-                label = {
-                    Text("Usuario")
-                }
+                label = { Text("Usuario") }
             )
 
             OutlinedTextField(
                 value = formulario.email,
                 onValueChange = { value ->
-                    formulario = formulario.copy(email = value )
+                    formulario = formulario.copy(email = value)
                 },
-                label = {
-                    Text("Correo electronico")
-                }
+                label = { Text("Correo electronico") }
             )
-
 
             OutlinedTextField(
                 value = formulario.password,
                 onValueChange = { value ->
-                    formulario = formulario.copy(password = value )
+                    formulario = formulario.copy(password = value)
                 },
-                label = {
-                    Text("Contrasenia")
-                }
+                label = { Text("Contrasenia") }
             )
+
             Spacer(modifier = Modifier.height(10.dp))
-            Button(onClick ={
-                if (formulario.id != 0) {
-                    viewModel.update(formulario)
-                }
-                onBack()
-            } , modifier = Modifier.fillMaxWidth(0.7f) ) {
+
+            Button(
+                onClick = {
+                    if (formulario.id != 0) viewModel.update(formulario)
+                    onBack()
+                },
+                modifier = Modifier.fillMaxWidth(0.7f)
+            ) {
                 Text("ACTUALIZAR")
             }
-            Button(onClick ={
-                if (formulario.id != 0) {
-                    viewModel.delete(formulario)
-                }
-                onBack()
-            }
-            , modifier = Modifier.fillMaxWidth(0.7f)
+
+            Button(
+                onClick = { showDeleteDialog = true },
+                modifier = Modifier.fillMaxWidth(0.7f)
             ) {
-                Text("ElIMINAR USUARIO")
+                Text("ELIMINAR USUARIO")
             }
         }
     }
