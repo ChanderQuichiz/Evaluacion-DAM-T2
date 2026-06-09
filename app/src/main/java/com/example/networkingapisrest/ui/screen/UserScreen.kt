@@ -1,5 +1,4 @@
 package com.example.networkingapisrest.ui.screen
-import NavigationBarExample
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,6 +37,7 @@ import com.example.networkingapisrest.data.remote.RetrofitClient
 import com.example.networkingapisrest.data.repository.UserRepository
 import com.example.networkingapisrest.data.repository.UserRepositoryImpl
 import com.example.networkingapisrest.ui.components.UserCard
+import com.example.networkingapisrest.ui.components.NavigationBarExample
 import com.example.networkingapisrest.viewmodel.UserViewModel
 import com.example.networkingapisrest.viewmodel.UserViewModelFactory
 

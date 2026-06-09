@@ -14,12 +14,12 @@ class AuthRepository(
     }
 
     suspend fun login(
-        usuario: String,
+        username: String,
         password: String
     ): UserEntity? {
 
         return userDao.login(
-            usuario,
+            username,
             password
         )
     }
