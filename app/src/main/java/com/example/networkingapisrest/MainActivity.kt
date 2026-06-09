@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.networkingapisrest.routes.AppNavigation
 import com.example.networkingapisrest.ui.screen.UserScreen
 import com.example.networkingapisrest.ui.theme.NetworkingApisRestTheme
 
@@ -13,7 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NetworkingApisRestTheme {
-                UserScreen()
+                AppNavigation()
             }
         }
     }

@@ -1,4 +1,5 @@
 package com.example.networkingapisrest.ui.screen
+import NavigationBarExample
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,18 +33,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.networkingapisrest.data.model.User
 import com.example.networkingapisrest.data.remote.RetrofitClient
 import com.example.networkingapisrest.data.repository.UserRepository
 import com.example.networkingapisrest.data.repository.UserRepositoryImpl
 import com.example.networkingapisrest.ui.components.UserCard
 import com.example.networkingapisrest.viewmodel.UserViewModel
 import com.example.networkingapisrest.viewmodel.UserViewModelFactory
-import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserScreen() {
+fun UserScreen(
+    onUserScreen: () -> Unit,
+    onLocalesScreen: () -> Unit,
+    currentRoute: String,
+
+    onEditarUsuario:(User)-> Unit
+) {
 
     val repository: UserRepository = UserRepositoryImpl(
         apiService = RetrofitClient.apiService
@@ -72,6 +79,13 @@ fun UserScreen() {
     }
 
     Scaffold(
+        bottomBar = {
+            NavigationBarExample(
+                onUserScreen,
+                onLocalesScreen,
+                currentRoute
+            )
+        },
         topBar = {
             TopAppBar(
                 title = {
@@ -86,7 +100,7 @@ fun UserScreen() {
                         Spacer(modifier = Modifier.padding(4.dp))
 
                         Text(
-                            text = "User Directory",
+                            text = "Usuarios desde API",
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -145,9 +159,7 @@ fun UserScreen() {
                         items(filteredUsers) { user ->
                             UserCard(
                                 user = user,
-                                onDetailClick = {
-                                    // Aquí luego puedes navegar a detalle
-                                }
+                                onEditarUsuario
                             )
                         }
                     }
