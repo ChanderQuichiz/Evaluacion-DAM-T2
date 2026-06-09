@@ -61,33 +61,38 @@ onBack:()-> Unit
 
     Scaffold(
         topBar = {
-            Row(
-                modifier = Modifier.padding(10.dp,6.dp).fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-    IconButton(
-        onClick = { onBack()}
+Column() {
+    Spacer(modifier = Modifier.height(30.dp))
+    Row(
+        modifier = Modifier.padding(10.dp,6.dp).fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(Icons.AutoMirrored.Filled.ArrowBack,null)
+        IconButton(
+            onClick = { onBack()}
+        ) {
+            Icon(Icons.AutoMirrored.Filled.ArrowBack,null)
+        }
+
+        Spacer(modifier = Modifier.width(20.dp))
+
+        Text("Editar Usuario", fontSize = 20.sp)
+        Spacer(modifier = Modifier.width(150.dp))
+        IconButton(
+            onClick = {
+                if (formulario.id != 0) {
+                    viewModel.delete(formulario)
+                }
+                onBack()
+            }
+        ) {
+            Icon(Icons.Default.Delete,null)
+        }
+
+
     }
 
-                Spacer(modifier = Modifier.width(20.dp))
 
-                Text("Editar Usuario", fontSize = 20.sp)
-                Spacer(modifier = Modifier.width(150.dp))
-                IconButton(
-                    onClick = {
-                            if (formulario.id != 0) {
-                                viewModel.delete(formulario)
-                            }
-                            onBack()
-                        }
-                    ) {
-                        Icon(Icons.Default.Delete,null)
-                    }
-
-
-            }
+}
 
         }
     ) {
