@@ -1,5 +1,6 @@
 package com.example.networkingapisrest.ui.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,14 +8,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Abc
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +50,8 @@ fun LocalesScreen(
     onUserScreen: () -> Unit,
     onLocalesScreen: () -> Unit,
     currentRoute: String,
-    onEditarUsuario: (UserEntity) -> Unit
+    onEditarUsuario: (UserEntity) -> Unit,
+    onRegisterScreen: () -> Unit
 ) {
     val context = LocalContext.current
     val db = remember { AppDatabase.getInstance(context) }
@@ -119,5 +126,36 @@ fun LocalesScreen(
                 }
             }
         }
+
+
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            // Contenido principal
+
+            FloatingActionButton(
+                onClick = {
+                    onRegisterScreen()
+                },
+                shape = CircleShape
+                ,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp,160.dp)
+                    .size(50.dp)
+
+            ) {
+                IconButton(
+                    onClick = {
+                        onRegisterScreen()
+                    }
+                ) {
+                    Icon(Icons.Default.Add,null)
+                }
+            }
+        }
+
+
     }
 }

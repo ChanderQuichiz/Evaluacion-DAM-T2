@@ -22,11 +22,13 @@ fun RegisterScreen(
     var confirmar by remember { mutableStateOf("") }
     var error by remember { mutableStateOf("") }
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        Spacer(modifier = Modifier.height(50.dp))
 
         Text(
             text = "Crear Cuenta",

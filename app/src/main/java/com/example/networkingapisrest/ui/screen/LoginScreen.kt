@@ -23,11 +23,13 @@ fun LoginScreen(
 
     val scope = rememberCoroutineScope()
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        Spacer(modifier = Modifier.height(50.dp))
 
         Text(
             text = "Ingresar",

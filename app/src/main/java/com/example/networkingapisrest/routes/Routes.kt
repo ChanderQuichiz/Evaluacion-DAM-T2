@@ -17,4 +17,6 @@ object Locales
 @Serializable
 object NavigationBarExample
 @Serializable
+object CrearUsuario
+@Serializable
 data class EditarUsuario(val id: Int)

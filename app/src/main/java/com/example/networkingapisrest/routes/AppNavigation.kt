@@ -11,6 +11,7 @@ import androidx.navigation.toRoute
 import com.example.networkingapisrest.data.local.AppDatabase
 import com.example.networkingapisrest.data.local.UserEntity
 import com.example.networkingapisrest.data.repository.AuthRepository
+import com.example.networkingapisrest.ui.screen.CrearUsuarioScreen
 import com.example.networkingapisrest.ui.screen.EditarUsuarioScreen
 import com.example.networkingapisrest.ui.screen.LocalesScreen
 import com.example.networkingapisrest.ui.screen.LoginScreen
@@ -68,7 +69,8 @@ fun AppNavigation() {
                 currentRoute = Locales.toString(),
                 onEditarUsuario = { user: UserEntity ->
                     navController.navigate(EditarUsuario(user.id))
-                }
+                },
+                onRegisterScreen = { navController.navigate(CrearUsuario )}
             )
         }
 
@@ -81,5 +83,15 @@ fun AppNavigation() {
                 }
             )
         }
+
+        composable<CrearUsuario> {
+            CrearUsuarioScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                authViewModel = authViewModel
+            )
+        }
+
     }
 }
