@@ -1,4 +1,5 @@
 package com.example.networkingapisrest.ui.components
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,19 +12,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.networkingapisrest.data.model.User
 
@@ -31,7 +41,8 @@ import com.example.networkingapisrest.data.model.User
 @Composable
 fun UserCard(
     user: User,
-    onDetailClick: () -> Unit
+
+    onEditarUsuario:(User)->Unit
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -73,6 +84,31 @@ fun UserCard(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+            //Menu compononete
+                var expanded by remember { mutableStateOf(false) }
+                Box(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    IconButton(onClick = { expanded = !expanded }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Editar") },
+                            onClick = { onEditarUsuario(user) }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Eliminar") },
+                            onClick = { /* Do something... */ }
+                        )
+                    }
+                }
+
+
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -82,29 +118,11 @@ fun UserCard(
                 text = user.email
             )
 
-            InfoRow(
-                icon = Icons.Default.Phone,
-                text = user.phone
-            )
 
-            InfoRow(
-                icon = Icons.Default.LocationOn,
-                text = user.address.city
-            )
-
-            InfoRow(
-                icon = Icons.Default.Business,
-                text = user.company.name
-            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = onDetailClick,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Ver detalle")
-            }
+
         }
     }
 }
