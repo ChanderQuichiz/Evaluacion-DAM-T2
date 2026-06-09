@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NetworkingApisRest"
+rootProject.name = "UsuariosLocalesT2"
 include(":app")
  

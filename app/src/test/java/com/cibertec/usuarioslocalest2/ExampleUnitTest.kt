@@ -1,4 +1,4 @@
-package com.example.networkingapisrest
+package com.cibertec.usuarioslocalest2
 
 import org.junit.Test
 
